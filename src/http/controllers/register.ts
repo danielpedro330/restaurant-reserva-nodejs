@@ -1,6 +1,7 @@
 import z, { string } from "zod";
 import { prisma } from "../../lib/prisma";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { enviarSMSviaEmail } from "../../Email/send-SMS-email";
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
     const registerBodySchema = z.object({
@@ -25,5 +26,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
         }
     })
 
-    return reply.status(201).send()
+    enviarSMSviaEmail(email, reservate)
+
+    return reply.status(201).send('Reserva feita com sucesso! Consulte o seu email.')
 }
